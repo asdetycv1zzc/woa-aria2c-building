@@ -6,7 +6,7 @@
 
 I chose WSL2 Debian 12 distro x86_64 as the compiling host. If anyone succeeds to build with MSYS2 please PR, thx a lot.
 
-If you are under ARM64 environment like Surface or Huawei Matebook E GO, the LLVM/Clang should be ```arch64``` instead of ```x86_64```. However I won't compile ARIA2 on such device.
+If you are under ARM64 environment like Surface Pro or Huawei Matebook E GO, the LLVM/Clang toolchain arch should be ```aarch64``` instead of ```x86_64```. However I won't compile ARIA2 on such device, since it may encounter weird problems.
 
 For Debian/Ubuntu users, run ``` sudo apt update && sudo apt install binutils gcc wget curl tar unzip autoconf automake make -y ```
 
