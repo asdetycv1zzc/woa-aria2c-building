@@ -47,7 +47,7 @@ $ sudo mkdir /usr/local/aarch64-w64-mingw32
 
 ## 1. Compile needed external pkgs ##
 
-We are building Windows-on-ARM aria2 so we don't need to compile LibGNUTls or other TLSlibs anymore :)
+We are building Windows-on-ARM aria2 so we don't need to compile LibGNUTls anymore :)
 
 Packages below are what we need for the build:
 
@@ -83,7 +83,7 @@ $ ./configure --host=aarch64-w64-mingw32 --disable-shared --enable-static --pref
 $ make && sudo make install
 ```
 
-###  LibGMP, LibSSH2-1, c-ares, LibExpat ###
+###  LibGMP, LibSSH2-1, c-ares, LibExpat, LibSQLite3 ###
 
 * Download src from official
 
@@ -92,12 +92,18 @@ $ wget https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz -O gmp.tar.gz
 $ wget https://libssh2.org/download/libssh2-1.11.0.tar.xz -O libssh2-1.tar.xz
 $ wget https://github.com/c-ares/c-ares/releases/download/v1.34.1/c-ares-1.34.1.tar.gz -O c-ares.tar.gz
 $ wget https://github.com/libexpat/libexpat/releases/download/R_2_6_3/expat-2.6.3.tar.xz -O expat.tar.xz
+$ wget https://www.sqlite.org/2024/sqlite-autoconf-3460100.tar.gz -O sqlite.tar.gz
 $ tar zxf gmp.tar.gz
 $ tar xf libssh2-1.tar.xz
 $ tar zxf c-ares.tar.gz
 $ tar xf expat.tar.xz
-$ rm gmp.tar.gz libssh2-1.tar.xz c-ares.tar.gz expat.tar.xz
+$ tar zxf sqlite.tar.gz
+$ rm gmp.tar.gz libssh2-1.tar.xz c-ares.tar.gz expat.tar.xz sqlite.tar.gz
 ```
+
+* Configure & Compile
+
+  The same as Nettle.
 
 ### ZLIB ###
 
@@ -113,7 +119,7 @@ $ rm zlib.tar.gz
 
 ZLib doesn't take cross-compiling into consideration. (though it runs everywhere without modification)
 
-Make some patches to it.
+Make some patches to its Makefile.
 
 ```
 $ cd zlib-*
@@ -125,8 +131,10 @@ $ sed -i "s/LDSHARED=gcc/LDSHARED=aarch64-w64-mingw32-gcc/" Makefile
 $ sed -i "s/RANLIB=ranlib/RANLIB=aarch64-w64-mingw32-ranlib/" Makefile
 ```
 
-* Build
+* Compile
 
 ```
 $ make && sudo make install
 ```
+
+
