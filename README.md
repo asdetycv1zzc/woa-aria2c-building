@@ -37,6 +37,8 @@ $ export PATH=/opt/llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64/bin:$PATH
 $ aarch64-w64-mingw32-gcc --version
 ```
 
+Notes: root may not find the toolchain, so when switching to root remember to set your path again.
+
 * Prepare an isolated folder for installing to avoid messing up the host
 
 ```
@@ -53,7 +55,7 @@ Packages below are what we need for the build:
 * libgmp
 * libssh2-1
 * c-ares
-* expat (NOT libxml2 as I failed to link it)
+* libexpat (NOT libxml2 as I failed to link it)
 * zlib
 * libsqlite3
 * pkg-config
@@ -65,19 +67,40 @@ Packages below are what we need for the build:
 ```
 $ wget https://ftp.gnu.org/gnu/nettle/nettle-3.10.tar.gz -O nettle.tar.gz
 $ tar zxvf nettle.tar.gz
-$ cd nettle
+$ rm nettle.tar.gz
 ```
 
 * Configure
 
 ```
+$ cd nettle-3.10
 $ ./configure --host=aarch64-w64-mingw32 --disable-shared --enable-static --prefix=/usr/local/aarch64-w64-mingw32
 ```
 
 * Compile
 
-Notes: root may not find the toolchain, so when switching to root remember to set your path again.
-
 ```
 $ make && sudo make install
 ```
+
+###  LibGMP, LibSSH2-1, c-ares, LibExpat ###
+
+* Download src from official
+
+```
+$ wget https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz -O gmp.tar.gz
+$ wget https://libssh2.org/download/libssh2-1.11.0.tar.xz -O libssh2-1.tar.xz
+$ wget https://github.com/c-ares/c-ares/releases/download/v1.34.1/c-ares-1.34.1.tar.gz -O c-ares.tar.gz
+$ wget https://github.com/libexpat/libexpat/releases/download/R_2_6_3/expat-2.6.3.tar.xz -O expat.tar.xz
+$ tar zxf gmp.tar.gz
+$ tar xf libssh2-1.tar.xz
+$ tar zxf c-ares.tar.gz
+$ tar xf expat.tar.xz
+$ rm gmp.tar.gz libssh2-1.tar.xz c-ares.tar.gz expat.tar.xz
+```
+
+* Configure & Build
+
+The same as Nettle.
+
+
