@@ -16,7 +16,7 @@ GCC currently has no official support for aarch64-w64-mingw32. Let's choose LLVM
 
 LLVM official release: https://github.com/mstorsjo/llvm-mingw
 
-Until writing this tutor, 20241001 is the latest version of LLVM/Clang. I cannot guarantee newer version will work as expected.
+Until writing this tutor, 20241001 is the latest version of LLVM/Clang. I cannot guarantee newer/older version will work as expected.
 
 * Download LLVM & Extract it to ``` /opt ```
 
@@ -29,6 +29,12 @@ sudo tar xf llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64.tar.xz -C /opt
 
 ```
 export PATH=/opt/llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64.tar.xz/bin:$PATH
+```
+
+* Check if the compiler can be found.
+
+```
+aarch64-w64-mingw32-gcc --version
 ```
 
 ## 1. Prepare needed external pkgs ##
