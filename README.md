@@ -73,7 +73,7 @@ $ rm nettle.tar.gz
 * Configure
 
 ```
-$ cd nettle-3.10
+$ cd nettle-*
 $ ./configure --host=aarch64-w64-mingw32 --disable-shared --enable-static --prefix=/usr/local/aarch64-w64-mingw32
 ```
 
@@ -99,8 +99,34 @@ $ tar xf expat.tar.xz
 $ rm gmp.tar.gz libssh2-1.tar.xz c-ares.tar.gz expat.tar.xz
 ```
 
-* Configure & Build
+### ZLIB ###
 
-The same as Nettle.
+* Download src from official
 
+```
+$ wget https://zlib.net/current/zlib.tar.gz -O zlib.tar.gz
+$ tar zxf zlib.tar.gz
+$ rm zlib.tar.gz
+```
 
+* Configure
+
+ZLib doesn't take cross-compiling into consideration. (though it runs everywhere without modification)
+
+Make some patches to it.
+
+```
+$ cd zlib-*
+$ ./configure --prefix=/usr/local/aarch64-w64-mingw32/ --static
+$ sed -i "s/CC=gcc/CC=aarch64-w64-mingw32-gcc/" Makefile
+$ sed -i "s/CPP=/CPP=aarch64-w64-mingw32-g++/" Makefile
+$ sed -i "s/AR=ar/AR=aarch64-w64-mingw32-ar/" Makefile
+$ sed -i "s/LDSHARED=gcc/LDSHARED=aarch64-w64-mingw32-gcc/" Makefile
+$ sed -i "s/RANLIB=ranlib/RANLIB=aarch64-w64-mingw32-ranlib/" Makefile
+```
+
+* Build
+
+```
+$ make && sudo make install
+```
