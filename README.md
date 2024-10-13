@@ -51,14 +51,13 @@ We are building Windows-on-ARM aria2 so we don't need to compile LibGNUTls anymo
 
 Packages below are what we need for the build:
 
-* nettle
+* libnettle (maybe we don't need it?)
 * libgmp
 * libssh2-1
 * c-ares
 * libexpat (NOT libxml2 as I failed to link it)
 * zlib
 * libsqlite3
-* pkg-config
   
 ### Nettle ###
 
@@ -137,4 +136,27 @@ $ sed -i "s/RANLIB=ranlib/RANLIB=aarch64-w64-mingw32-ranlib/" Makefile
 $ make && sudo make install
 ```
 
+## 2. Compile ARIA2 ##
 
+* Download src from official
+
+```
+$ wget https://github.com/aria2/aria2/releases/download/release-1.37.0/aria2-1.37.0.tar.xz -O aria2.tar.xz
+$ tar xf aria2.tar.xz
+$ rm aria2.tar.xz
+```
+
+* Configure
+
+```
+$ cd aria2-*
+$ ./configure --host=aarch64-w64-mingw32 --enable-shared --enable-static --without-appletls --without-libxml2 --prefix=/your/path/to/build ARIA2_STATIC=yes
+```
+
+* Compile
+
+```
+$ make -j8 && sudo make install
+```
+
+Now you should be able to see aria2c.exe in your build path. Enjoy.
