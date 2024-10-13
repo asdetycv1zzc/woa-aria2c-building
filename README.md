@@ -4,7 +4,9 @@
 
 ### Environment ###
 
-I chose WSL2 Debian 12 distro as the compiling host. If anyone succeeds to build with MSYS2 please PR, thx a lot.
+I chose WSL2 Debian 12 distro x86_64 as the compiling host. If anyone succeeds to build with MSYS2 please PR, thx a lot.
+
+If you are under ARM64 environment like Surface or Huawei Matebook E GO, the LLVM/Clang should be ```arch64``` instead of ```x86_64```. However I won't compile ARIA2 on such device.
 
 For Debian/Ubuntu users, run ``` sudo apt update && sudo apt install binutils gcc wget curl tar unzip autoconf automake make -y ```
 
@@ -18,7 +20,7 @@ LLVM official release: https://github.com/mstorsjo/llvm-mingw
 
 Until writing this tutor, 20241001 is the latest version of LLVM/Clang. I cannot guarantee newer/older version will work as expected.
 
-* Download LLVM & Extract it to ``` /opt ```
+* Download LLVM/Clang & Extract it to ``` /opt ```
 
 ```
 $ wget https://github.com/mstorsjo/llvm-mingw/releases/download/20241001/llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64.tar.xz -O llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64.tar.xz
@@ -54,7 +56,7 @@ Packages below are what we need for the build:
 * libnettle (maybe we don't need it?)
 * libgmp
 * libssh2-1
-* c-ares
+* libc-ares
 * libexpat (NOT libxml2 as I failed to link it)
 * zlib
 * libsqlite3
@@ -64,9 +66,9 @@ Packages below are what we need for the build:
 * Download src from GNU
 
 ```
-$ wget https://ftp.gnu.org/gnu/nettle/nettle-3.10.tar.gz -O nettle.tar.gz
-$ tar zxvf nettle.tar.gz
-$ rm nettle.tar.gz
+$ wget https://ftp.gnu.org/gnu/nettle/nettle-3.10.tar.gz -O libnettle.tar.gz
+$ tar zxvf libnettle.tar.gz
+$ rm libnettle.tar.gz
 ```
 
 * Configure
@@ -88,16 +90,16 @@ $ make && sudo make install
 
 ```
 $ wget https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz -O gmp.tar.gz
-$ wget https://libssh2.org/download/libssh2-1.11.0.tar.xz -O libssh2-1.tar.xz
+$ wget https://libssh2.org/download/libssh2-1.11.0.tar.xz -O libssh2.tar.xz
 $ wget https://github.com/c-ares/c-ares/releases/download/v1.34.1/c-ares-1.34.1.tar.gz -O c-ares.tar.gz
 $ wget https://github.com/libexpat/libexpat/releases/download/R_2_6_3/expat-2.6.3.tar.xz -O expat.tar.xz
 $ wget https://www.sqlite.org/2024/sqlite-autoconf-3460100.tar.gz -O sqlite.tar.gz
 $ tar zxf gmp.tar.gz
-$ tar xf libssh2-1.tar.xz
+$ tar xf libssh2.tar.xz
 $ tar zxf c-ares.tar.gz
 $ tar xf expat.tar.xz
 $ tar zxf sqlite.tar.gz
-$ rm gmp.tar.gz libssh2-1.tar.xz c-ares.tar.gz expat.tar.xz sqlite.tar.gz
+$ rm gmp.tar.gz libssh2.tar.xz c-ares.tar.gz expat.tar.xz sqlite.tar.gz
 ```
 
 * Configure & Compile
@@ -116,13 +118,16 @@ $ rm zlib.tar.gz
 
 * Configure
 
-ZLib doesn't take cross-compiling into consideration. (though it runs everywhere without modification)
-
-Make some patches to its Makefile.
-
 ```
 $ cd zlib-*
 $ ./configure --prefix=/usr/local/aarch64-w64-mingw32/ --static
+```
+
+  ZLib doesn't take cross-compiling into consideration. (though it runs everywhere without modification)
+
+  Make some patches to its Makefile.
+
+```
 $ sed -i "s/CC=gcc/CC=aarch64-w64-mingw32-gcc/" Makefile
 $ sed -i "s/CPP=/CPP=aarch64-w64-mingw32-g++/" Makefile
 $ sed -i "s/AR=ar/AR=aarch64-w64-mingw32-ar/" Makefile
