@@ -28,7 +28,7 @@ sudo tar xf llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64.tar.xz -C /opt
 * Then add it to your PATH variable.
 
 ```
-export PATH=/opt/llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64.tar.xz/bin:$PATH
+export PATH=/opt/llvm-mingw-20241001-ucrt-ubuntu-20.04-x86_64/bin:$PATH
 ```
 
 * Check if the compiler can be found.
